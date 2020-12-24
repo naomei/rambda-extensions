@@ -1,5 +1,6 @@
 type ValueOf<T> = T[keyof T];
 type AnyObject = { [k: string]: any };
+type Falsy = false | '' | 0 | null | undefined;
 
 export const mapKeys = <
   T extends AnyObject & T extends any[] ? never : AnyObject
@@ -10,7 +11,7 @@ export const mapKeys = <
   return R.zipObj(Object.keys(obj).map(fn), Object.values(obj));
 };
 
-export const compact = (input: any[]) => R.filter(Boolean, input);
+export const compact = <T>(input: (T | Falsy)[]): T[] => input.filter(Boolean) as T[];
 
 export const sum = (input: number[], inital = 0): number => {
   return R.reduce((prev, curr) => R.add(prev, curr), inital, input);
